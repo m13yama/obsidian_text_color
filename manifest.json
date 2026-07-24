@@ -1,0 +1,9 @@
+{
+  "id": "selection-text-color",
+  "name": "Selection Text Color",
+  "version": "1.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "選択した文字の色を、右クリックメニューから6色のパレットで変更します。",
+  "author": "Yuki",
+  "isDesktopOnly": false
+}

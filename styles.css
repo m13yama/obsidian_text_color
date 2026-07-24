@@ -1,0 +1,43 @@
+/* Context-menu palette */
+.selection-text-color-swatch {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-right: 0.75rem;
+  border: 1px solid var(--background-modifier-border-hover);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--background-primary) inset;
+  vertical-align: -0.08rem;
+}
+
+.selection-text-color-option-name {
+  display: inline-block;
+  min-width: 6.5rem;
+}
+
+.selection-text-color-option-code {
+  margin-left: 0.75rem;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Settings palette */
+.selection-text-color-settings .selection-text-color-setting-row {
+  position: relative;
+}
+
+.selection-text-color-settings .selection-text-color-setting-row::before {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.75rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 50%;
+  background: var(--selection-text-color-preview);
+  content: "";
+}
+
+.selection-text-color-settings .selection-text-color-setting-row input[type="text"] {
+  width: 10rem;
+}
