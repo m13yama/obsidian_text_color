@@ -1,7 +1,7 @@
 {
   "id": "selection-text-color",
   "name": "Selection Text Color",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "minAppVersion": "1.0.0",
   "description": "Color selected text using six customizable presets from the editor context menu or commands.",
   "author": "Yuki",
