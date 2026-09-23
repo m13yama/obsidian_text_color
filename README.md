@@ -1,37 +1,43 @@
 # Selection Text Color
 
-Obsidian のエディタで選択した文字に、右クリックメニューから色を付けるプラグインです。
+An Obsidian plugin that colors selected text using the editor context menu or commands.
 
-## 使い方
+## Usage
 
-1. 編集画面で色を変えたい文字を選択します。
-2. 選択範囲を右クリックします。
-3. 「文字色」の下に並ぶ6色のパレットから色を選びます。
+1. Select the text you want to color in the editor.
+2. Right-click the selection.
+3. Choose one of the six preset colors under **Text color**.
 
-選択範囲は次のような HTML の `span` で囲まれます。色指定はノート自体に保存されるため、プラグインを無効化しても維持されます。
+The selected text is wrapped in an HTML `span` like this. The color is saved in the note itself, so it remains even if you disable the plugin.
 
 ```html
-<span style="color: #E05252;">色を付けた文字</span>
+<span style="color: #E05252;">Colored text</span>
 ```
 
-## パレットの変更
+## Commands and hotkeys
 
-「設定」→「コミュニティプラグイン」→「Selection Text Color」で、6項目それぞれの表示名と色を変更できます。
+Select text, open the command palette, and run **Selection Text Color: Apply color 1 to selected text** through **Apply color 6 to selected text**. Each command uses the corresponding numbered color in the plugin settings. These commands are only available when text is selected.
 
-初期パレットはレッド、オレンジ、イエロー、グリーン、ブルー、パープルです。ライトテーマとダークテーマのどちらでも判別しやすいよう、明るすぎない色を選んでいます。
+To assign a hotkey to each color command, search for **Selection Text Color** in **Settings → Hotkeys**. Changing a color or resetting the palette takes effect immediately for commands and preserves your hotkey assignments.
 
-## インストール（手動）
+## Customize the palette
 
-1. `npm install` を実行します。
-2. `npm run build` を実行します。
-3. `manifest.json`、`main.js`、`styles.css` を Vault 内の `.obsidian/plugins/selection-text-color/` にコピーします。
-4. Obsidian を再起動し、「設定」→「コミュニティプラグイン」から有効にします。
+Open **Settings → Community plugins → Selection Text Color** to change the display name and color of each of the six presets.
 
-## 開発
+The default palette contains Red, Orange, Yellow, Green, Blue, and Purple. The colors avoid excessive brightness to help keep them distinguishable in both light and dark themes.
+
+## Manual installation
+
+1. Run `npm install`.
+2. Run `npm run build`.
+3. Copy `manifest.json`, `main.js`, and `styles.css` to `.obsidian/plugins/selection-text-color/` inside your vault.
+4. Restart Obsidian and enable the plugin in **Settings → Community plugins**.
+
+## Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-`npm run dev` はソースの変更を監視して `main.js` を再ビルドします。
+`npm run dev` watches for source changes and rebuilds `main.js` automatically.

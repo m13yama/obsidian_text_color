@@ -1,9 +1,9 @@
 {
   "id": "selection-text-color",
   "name": "Selection Text Color",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "minAppVersion": "1.0.0",
-  "description": "選択した文字の色を、右クリックメニューから6色のパレットで変更します。",
+  "description": "Color selected text using six customizable presets from the editor context menu or commands.",
   "author": "Yuki",
   "isDesktopOnly": false
 }

@@ -19,12 +19,12 @@ interface TextColorSettings {
 }
 
 const DEFAULT_COLORS: ReadonlyArray<Readonly<ColorOption>> = [
-  { name: "レッド", color: "#E05252" },
-  { name: "オレンジ", color: "#D97706" },
-  { name: "イエロー", color: "#B88700" },
-  { name: "グリーン", color: "#2F9E44" },
-  { name: "ブルー", color: "#3B82F6" },
-  { name: "パープル", color: "#8B5CF6" },
+  { name: "Red", color: "#E05252" },
+  { name: "Orange", color: "#D97706" },
+  { name: "Yellow", color: "#B88700" },
+  { name: "Green", color: "#2F9E44" },
+  { name: "Blue", color: "#3B82F6" },
+  { name: "Purple", color: "#8B5CF6" },
 ];
 
 const HEX_COLOR = /^#[0-9a-f]{6}$/i;
@@ -84,6 +84,32 @@ export default class SelectionTextColorPlugin extends Plugin {
     this.settings = normalizeSettings(await this.loadData());
     this.addSettingTab(new TextColorSettingTab(this.app, this));
 
+    this.settings.colors.forEach((_, index) => {
+      this.addCommand({
+        id: `apply-preset-color-${index + 1}`,
+        name: `Apply color ${index + 1} to selected text`,
+        editorCheckCallback: (checking, editor) => {
+          const selectedText = editor.getSelection();
+          const option = this.settings.colors[index];
+          if (selectedText.length === 0 || !option) {
+            return false;
+          }
+
+          if (!checking) {
+            this.applyColor(
+              editor,
+              selectedText,
+              editor.getCursor("from"),
+              editor.getCursor("to"),
+              option.color,
+            );
+          }
+
+          return true;
+        },
+      });
+    });
+
     this.registerEvent(
       this.app.workspace.on("editor-menu", (menu, editor) => {
         this.addTextColorMenu(menu, editor);
@@ -111,7 +137,7 @@ export default class SelectionTextColorPlugin extends Plugin {
 
     menu.addSeparator();
     menu.addItem((item) => {
-      item.setTitle("文字色").setIcon("palette").setIsLabel(true);
+      item.setTitle("Text color").setIcon("palette").setIsLabel(true);
     });
 
     for (const option of this.settings.colors) {
@@ -146,7 +172,9 @@ export default class SelectionTextColorPlugin extends Plugin {
     color: string,
   ): void {
     if (!HEX_COLOR.test(color)) {
-      new Notice("文字色の設定が正しくありません。設定画面で色を選び直してください。");
+      new Notice(
+        "Invalid text color. Please choose a color again in the plugin settings.",
+      );
       return;
     }
 
@@ -175,15 +203,15 @@ class TextColorSettingTab extends PluginSettingTab {
     containerEl.addClass("selection-text-color-settings");
 
     new Setting(containerEl)
-      .setName("右クリックメニューの6色")
+      .setName("Text color palette")
       .setDesc(
-        "表示名と色を変更できます。変更後に開いたメニューから新しい設定が使われます。",
+        "Customize the display names and colors. Each command uses the corresponding numbered color, and color changes take effect immediately.",
       )
       .setHeading();
 
     this.textColorPlugin.settings.colors.forEach((option, index) => {
       const setting = new Setting(containerEl)
-        .setName(`カラー ${index + 1}`)
+        .setName(`Color ${index + 1}`)
         .setDesc(option.color.toUpperCase());
 
       setting.settingEl.style.setProperty(
@@ -194,7 +222,7 @@ class TextColorSettingTab extends PluginSettingTab {
 
       setting.addText((text) => {
         text
-          .setPlaceholder(`カラー ${index + 1}の表示名`)
+          .setPlaceholder(`Display name for color ${index + 1}`)
           .setValue(option.name)
           .onChange(async (value) => {
             const trimmed = value.trim();
@@ -203,7 +231,7 @@ class TextColorSettingTab extends PluginSettingTab {
               await this.textColorPlugin.saveSettings();
             }
           });
-        text.inputEl.setAttr("aria-label", `カラー ${index + 1}の表示名`);
+        text.inputEl.setAttr("aria-label", `Display name for color ${index + 1}`);
       });
 
       setting.addColorPicker((picker) => {
@@ -223,16 +251,18 @@ class TextColorSettingTab extends PluginSettingTab {
     });
 
     new Setting(containerEl)
-      .setName("初期パレットに戻す")
-      .setDesc("6色の表示名と色を、インストール時の状態に戻します。")
+      .setName("Restore default palette")
+      .setDesc(
+        "Reset the display names and colors of all six presets to their defaults.",
+      )
       .addButton((button) => {
         button
-          .setButtonText("6色をリセット")
+          .setButtonText("Reset all six colors")
           .setWarning()
           .onClick(async () => {
             await this.textColorPlugin.resetColors();
             this.display();
-            new Notice("文字色のパレットを初期値に戻しました。");
+            new Notice("Text color palette restored to defaults.");
           });
       });
   }
