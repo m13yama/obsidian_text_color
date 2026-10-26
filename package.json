@@ -1,12 +1,13 @@
 {
   "name": "obsidian-selection-text-color",
-  "version": "0.0.1",
-  "description": "Obsidian plugin that colors selected text using six customizable presets from the editor context menu or commands.",
+  "version": "0.1.0",
+  "description": "Obsidian plugin that colors text using readable color names and six fixed presets.",
   "main": "main.js",
   "type": "module",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "tsc --noEmit --skipLibCheck && node esbuild.config.mjs production"
+    "build": "tsc --noEmit --skipLibCheck && node esbuild.config.mjs production",
+    "test": "node --import tsx --test --experimental-test-isolation=none tests/*.test.ts"
   },
   "keywords": [
     "obsidian",
@@ -15,9 +16,14 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@codemirror/language": "6.12.4",
+    "@codemirror/state": "6.5.0",
+    "@codemirror/view": "6.38.6",
     "@types/node": "^22.15.17",
     "esbuild": "0.25.5",
+    "jsdom": "29.1.1",
     "obsidian": "latest",
+    "tsx": "4.23.13",
     "typescript": "^5.8.3"
   }
 }

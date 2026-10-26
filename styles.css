@@ -22,22 +22,10 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Settings palette */
-.selection-text-color-settings .selection-text-color-setting-row {
-  position: relative;
-}
-
-.selection-text-color-settings .selection-text-color-setting-row::before {
-  width: 0.75rem;
-  height: 0.75rem;
-  margin-right: 0.75rem;
-  flex: 0 0 auto;
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 50%;
-  background: var(--selection-text-color-preview);
-  content: "";
-}
-
-.selection-text-color-settings .selection-text-color-setting-row input[type="text"] {
-  width: 10rem;
-}
+/* Fixed presets shared by reading mode and the editor. */
+.selection-text-color-red { color: #E05252; }
+.selection-text-color-orange { color: #D97706; }
+.selection-text-color-yellow { color: #B88700; }
+.selection-text-color-green { color: #2F9E44; }
+.selection-text-color-blue { color: #3B82F6; }
+.selection-text-color-purple { color: #8B5CF6; }
