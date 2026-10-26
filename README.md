@@ -1,6 +1,6 @@
 # Selection Text Color
 
-An Obsidian plugin that colors text with a short, readable syntax and six fixed presets.
+An Obsidian plugin that colors text with a short, readable syntax and six fixed color names with customizable display colors.
 
 ## Usage
 
@@ -31,11 +31,15 @@ Select text, open the command palette, and run **Selection Text Color: Apply red
 
 To assign a hotkey, search for **Selection Text Color** in **Settings → Hotkeys**. Existing numbered command IDs and hotkey assignments are preserved: 1 = red, 2 = orange, 3 = yellow, 4 = green, 5 = blue, 6 = purple.
 
-## Fixed palette
+## Customize the palette
 
-The presets are Red, Orange, Yellow, Green, Blue, and Purple. The colors avoid excessive brightness to help keep them distinguishable in both light and dark themes.
+Open **Settings → Selection Text Color** to choose the display color for each of the six fixed names: `red`, `orange`, `yellow`, `green`, `blue`, and `purple`.
 
-Color names and values are now fixed, so the source text always identifies the color. Previous custom palette settings no longer affect commands; colors already saved in HTML spans remain unchanged.
+For example, you can make `red` a darker shade of red without changing `[text]{red}` in your notes. Changes apply immediately to existing shorthand in reading mode, Live Preview, source mode, and popout windows. Command names, hotkeys, and the names used in notes stay the same.
+
+Use **Restore defaults** to reset all six display colors. The default palette avoids excessive brightness to help keep the colors distinguishable in both light and dark themes. Saved palette colors from versions before 0.1.0 are restored by their original preset order; editable preset names are not restored.
+
+HTML spans keep the literal color saved in the note. New multiline or ambiguous-bracket selections use the currently configured color when inserting an HTML span.
 
 ## Manual installation
 

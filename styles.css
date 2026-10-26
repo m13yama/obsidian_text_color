@@ -22,10 +22,10 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Fixed presets shared by reading mode and the editor. */
-.selection-text-color-red { color: #E05252; }
-.selection-text-color-orange { color: #D97706; }
-.selection-text-color-yellow { color: #B88700; }
-.selection-text-color-green { color: #2F9E44; }
-.selection-text-color-blue { color: #3B82F6; }
-.selection-text-color-purple { color: #8B5CF6; }
+/* Fixed names with configurable colors shared by reading mode and the editor. */
+.selection-text-color-red { color: var(--selection-text-color-red, #E05252); }
+.selection-text-color-orange { color: var(--selection-text-color-orange, #D97706); }
+.selection-text-color-yellow { color: var(--selection-text-color-yellow, #B88700); }
+.selection-text-color-green { color: var(--selection-text-color-green, #2F9E44); }
+.selection-text-color-blue { color: var(--selection-text-color-blue, #3B82F6); }
+.selection-text-color-purple { color: var(--selection-text-color-purple, #8B5CF6); }

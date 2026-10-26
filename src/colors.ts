@@ -8,6 +8,7 @@ export const COLORS = [
 ] as const;
 
 export type ColorId = (typeof COLORS)[number]["id"];
+export const HEX_COLOR = /^#[0-9a-f]{6}$/i;
 
 export interface TextRange {
   from: number;
@@ -62,12 +63,13 @@ export function colorClass(color: ColorId): string {
   return `selection-text-color-${color}`;
 }
 
-export function colorWrappers(text: string, color: ColorId): { prefix: string; suffix: string } {
+export function colorWrappers(text: string, color: ColorId, configuredColor?: string): { prefix: string; suffix: string } {
   const shorthand = `[${text}]{${color}}`;
   // Preserve text that cannot safely be enclosed in inline bracket notation.
   if (/[\r\n]/.test(text) || !findColors(shorthand).some(range => range.from === 0 && range.to === shorthand.length)) {
     const preset = COLORS.find(option => option.id === color)!;
-    return { prefix: `<span style="color: ${preset.color};">`, suffix: "</span>" };
+    const value = configuredColor && HEX_COLOR.test(configuredColor) ? configuredColor.toUpperCase() : preset.color;
+    return { prefix: `<span style="color: ${value};">`, suffix: "</span>" };
   }
   return { prefix: "[", suffix: `]{${color}}` };
 }

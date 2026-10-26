@@ -4,6 +4,9 @@ import { COLORS, colorWrappers } from "./colors";
 import type { ColorId } from "./colors";
 import { colorEditorExtension } from "./editor";
 import { renderColors } from "./render";
+import { PaletteStyles } from "./palette-styles";
+import { normalizeSettings } from "./settings";
+import { TextColorSettingTab } from "./settings-tab";
 
 function advancePosition(start: EditorPosition, text: string): EditorPosition {
   const lines = text.split("\n");
@@ -14,8 +17,21 @@ function advancePosition(start: EditorPosition, text: string): EditorPosition {
 }
 
 export default class SelectionTextColorPlugin extends Plugin {
+  settings = normalizeSettings(undefined);
+  private readonly paletteStyles = new PaletteStyles();
+
   async onload(): Promise<void> {
-    this.registerMarkdownPostProcessor(element => renderColors(element));
+    this.settings = normalizeSettings(await this.loadData());
+    this.paletteStyles.setColors(this.settings.colors);
+    this.paletteStyles.attach(document);
+    this.register(() => this.paletteStyles.destroy());
+    this.registerEvent(this.app.workspace.on("window-open", (_workspaceWindow, win) => this.paletteStyles.attach(win.document)));
+    this.registerEvent(this.app.workspace.on("window-close", (_workspaceWindow, win) => this.paletteStyles.detach(win.document)));
+    this.addSettingTab(new TextColorSettingTab(this.app, this));
+    this.registerMarkdownPostProcessor(element => {
+      this.paletteStyles.attach(element.ownerDocument);
+      renderColors(element);
+    });
     this.registerEditorExtension(colorEditorExtension(editorLivePreviewField));
 
     COLORS.forEach((option, index) => {
@@ -40,9 +56,20 @@ export default class SelectionTextColorPlugin extends Plugin {
 
     this.app.workspace.onLayoutReady(() => {
       this.app.workspace.iterateAllLeaves(leaf => {
+        this.paletteStyles.attach(leaf.view.containerEl.ownerDocument);
         if (leaf.view instanceof MarkdownView) leaf.view.previewMode.rerender(true);
       });
     });
+  }
+
+  async saveSettings(): Promise<void> {
+    this.paletteStyles.setColors(this.settings.colors);
+    await this.saveData(this.settings);
+  }
+
+  async resetColors(): Promise<void> {
+    this.settings = normalizeSettings(undefined);
+    await this.saveSettings();
   }
 
   private addTextColorMenu(menu: Menu, editor: Editor): void {
@@ -56,7 +83,7 @@ export default class SelectionTextColorPlugin extends Plugin {
     for (const option of COLORS) {
       menu.addItem(item => {
         const title = createFragment(fragment => {
-          fragment.createSpan({ cls: "selection-text-color-swatch", attr: { style: `background-color: ${option.color}` } });
+          fragment.createSpan({ cls: "selection-text-color-swatch", attr: { style: `background-color: ${this.settings.colors[option.id]}` } });
           fragment.createSpan({ cls: "selection-text-color-option-name", text: option.name });
           fragment.createSpan({ cls: "selection-text-color-option-code", text: `{${option.id}}` });
         });
@@ -66,7 +93,7 @@ export default class SelectionTextColorPlugin extends Plugin {
   }
 
   private applyColor(editor: Editor, selectedText: string, from: EditorPosition, to: EditorPosition, color: ColorId): void {
-    const { prefix, suffix } = colorWrappers(selectedText, color);
+    const { prefix, suffix } = colorWrappers(selectedText, color, this.settings.colors[color]);
     editor.replaceRange(`${prefix}${selectedText}${suffix}`, from, to);
     const selectionStart = advancePosition(from, prefix);
     editor.setSelection(selectionStart, advancePosition(selectionStart, selectedText));

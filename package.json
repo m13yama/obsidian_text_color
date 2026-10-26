@@ -1,7 +1,7 @@
 {
   "name": "obsidian-selection-text-color",
-  "version": "0.1.0",
-  "description": "Obsidian plugin that colors text using readable color names and six fixed presets.",
+  "version": "0.1.1",
+  "description": "Obsidian plugin that colors text using fixed readable color names and customizable display colors.",
   "main": "main.js",
   "type": "module",
   "scripts": {
